@@ -52,10 +52,14 @@ body{
     margin-left: 5px;
 }
 
-.btn-check-answer{
+.btn{
     background-color: var(--primary-color);
     border: none;
     padding: 10px 30px;
     font-size: medium;
     font-weight: semibold;
+}
+
+.btn:hover {
+    background-color: rgb(138, 216, 3);
 }
