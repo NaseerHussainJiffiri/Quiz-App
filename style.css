@@ -24,7 +24,8 @@ body{
     width: 100vw;
 }
 
-.quiz-section{
+section{
+    position: absolute;
     border: 5px solid var(--primary-color);
     border-radius: 15px;
     padding: 25px;
@@ -57,9 +58,27 @@ body{
     border: none;
     padding: 10px 30px;
     font-size: medium;
-    font-weight: semibold;
+    font-weight: bold;
+    color: rgb(21, 79, 0);
 }
 
 .btn:hover {
     background-color: rgb(138, 216, 3);
+}
+
+.quizInfo{
+    font-size: large;
+    font-weight: bold;
+    margin-left: 100px;
+}
+
+.hidden{
+    visibility: hidden;
+}
+
+.welcome-screen{
+    text-align: center;
+}
+.welcome-screen p, h1 {
+    margin: 20px auto;
 }

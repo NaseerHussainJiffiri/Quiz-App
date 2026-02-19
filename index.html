@@ -2,15 +2,15 @@
 <html lang="en>
     <head>
         <meta charset="UTF-8"/>
-        <meta name="viewport" content="width:device-width initial-scale:1.0" />
+        <meta name="viewport" content="width=device-width initial-scale=1.0" />
         <title>
             Quiz App
         </title>
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
-        <section class="quiz-section">
-
+        <section class="quiz-section hidden">
+        <form action="">
             <h1 class="question">
                 Lorem ipsum dolor sit amet consectetur.
             </h1>
@@ -33,9 +33,26 @@
             </div>
 
             <button class="btn btn-back-answer">< back</button>
-            <button class="btn btn-check-answer">Check</button>
             <button class="btn btn-next-answer">Next ></button>
 
+            <span class="quizInfo">
+                2 / 10
+            </span>
+        </form>
         </section>
+
+        <section class="welcome-screen">
+            <h1 class="question">
+                Time to test your knowledge!
+            </h1>
+            <p>
+                You've got this. Take your time and pick the best answer.
+            </p>
+
+            <button class="btn btn-start">START QUIZ</button>
+        </section>
+
+        <script src="script.js">
+        </script>
     </body>
 </html>
