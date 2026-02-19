@@ -116,7 +116,7 @@ if(localStorage.getItem('quizData')){
 
 $startBtn.addEventListener('click',(e)=>{
     console.log('clicked');
-    localStorage.setItem('quizData', quizAnsOptions)
+    localStorage.setItem('quizData', JSON.stringify(quizAnsOptions));
     $welcomeScreen.classList.add('hidden');
     $quizSection.classList.remove('hidden');
     localStorage.setItem('quizNum','0');
