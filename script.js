@@ -96,7 +96,8 @@ let quizAnsOptions = [
 
 let $quizInfo = document.querySelector('.quizInfo');
 let $welcomeScreen = document.querySelector('.welcome-screen');
-let $quizSection = document.querySelector('.quiz-section')
+let $quizSection = document.querySelector('.quiz-section');
+let $finishWindow = document.querySelector('.finish-window');
 let $startBtn = document.querySelector('.btn-start');
 let $quizQus = document.querySelector('.question');
 let $quizAnsA = document.querySelector('.answer-option-a');
@@ -104,44 +105,85 @@ let $quizAnsB = document.querySelector('.answer-option-b');
 let $quizAnsC = document.querySelector('.answer-option-c');
 let $nexBtn = document.querySelector('.btn-next-answer');
 let $backBtn = document.querySelector('.btn-back-answer');
+let $startAgainBtn = document.querySelector('.btn-start-again')
 
 let totalQuiz = quizAnswers.length;
 
 function loadQuiz(){
-    let index = localStorage.getItem('quizNum');
+    let index = Number(localStorage.getItem('quizNum'));
     
     $quizQus.innerHTML=quizAnsOptions[index].question;
     $quizAnsA.innerText =quizAnsOptions[index].answerOptionA;
     $quizAnsB.innerText =quizAnsOptions[index].answerOptionB;
     $quizAnsC.innerText =quizAnsOptions[index].answerOptionC;
-    
+
+    $quizInfo.innerHTML = ` ${index+1} / ${totalQuiz} `;
+
+    if(index+1 === totalQuiz){
+        $nexBtn.innerText = "Finish";
+    }else{
+        $nexBtn.innerText = "Next >";
+    }
 }
 
-//locad quiz data if local storage have quiz data
-if(localStorage.getItem('quizData')){
+function showStartWindow(){
+    $welcomeScreen.classList.remove('hidden');
+    $quizSection.classList.add('hidden');
+    $finishWindow.classList.add('hidden');
+}
+
+function showQuizWindow(){
     $welcomeScreen.classList.add('hidden');
     $quizSection.classList.remove('hidden');
+    $finishWindow.classList.add('hidden');
+}
+
+function showFinishWindow(){
+    $welcomeScreen.classList.add('hidden');
+    $quizSection.classList.add('hidden');
+    $finishWindow.classList.remove('hidden');
+}
+
+function startQuiz(){
+    showQuizWindow();
+    localStorage.setItem('quizNum','0');
+    localStorage.setItem('quizStatus','start');
     loadQuiz();
+}
+
+
+//locad quiz data if local storage have quiz data
+if(localStorage.getItem('quizStatus') === 'start'){
+    showQuizWindow();
+    loadQuiz();
+}else if(localStorage.getItem('quizStatus') === 'finish'){
+    showFinishWindow();
 }
 
 $startBtn.addEventListener('click',(e)=>{
-    localStorage.setItem('quizData', JSON.stringify(quizAnsOptions));
-    $welcomeScreen.classList.add('hidden');
-    $quizSection.classList.remove('hidden');
-    localStorage.setItem('quizNum','0');
-    loadQuiz();
+    startQuiz();
+});
 
-})
+$startAgainBtn.addEventListener('click',(e)=>{
+    startQuiz();
+});
 
-$nexBtn .addEventListener('click',()=>{
-    let index = localStorage.getItem('quizNum');
-
-    if(totalQuiz>Number(localStorage.getItem('quizNum'))+1){
-        index = Number(localStorage.getItem('quizNum'))+1;
+$nexBtn.addEventListener('click',()=>{
+    if($nexBtn.innerText == "Next >"){
+        let index = localStorage.getItem('quizNum');
+    
+        if(totalQuiz>Number(localStorage.getItem('quizNum'))+1){
+            index = Number(localStorage.getItem('quizNum'))+1;
+        }
+        localStorage.setItem('quizNum', index);
+        loadQuiz();
+    }else if($nexBtn.innerText == "Finish"){
+        if(confirm("Are you sure?")){
+            showFinishWindow();
+            localStorage.clear('quizData');
+            localStorage.setItem("quizStatus","finish");
+        }
     }
-    localStorage.setItem('quizNum', index);
-    console.log(index, localStorage.getItem('quizNum'));
-    loadQuiz();
 });
 
 $backBtn .addEventListener('click',()=>{
@@ -150,6 +192,5 @@ $backBtn .addEventListener('click',()=>{
         index = Number(localStorage.getItem('quizNum'))-1;
     }
     localStorage.setItem('quizNum', index);
-    console.log(index, localStorage.getItem('quizNum'));
     loadQuiz();
 });

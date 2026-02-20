@@ -79,6 +79,28 @@ section{
 .welcome-screen{
     text-align: center;
 }
-.welcome-screen p, h1 {
-    margin: 20px auto;
+
+
+.finishWindow{
+    position: absolute;
+}
+
+.score-info{
+    background-color: var(--primary-color);
+    width: 150px;
+    text-align: center;
+    padding: 10px;
+}
+
+.main-title{
+    margin: 1rem auto ;
+}
+
+.main-text{
+    margin: 1rem auto;
+}
+
+.quiz-score{
+    display: flex;
+    gap: 1rem;
 }
