@@ -98,27 +98,58 @@ let $quizInfo = document.querySelector('.quizInfo');
 let $welcomeScreen = document.querySelector('.welcome-screen');
 let $quizSection = document.querySelector('.quiz-section')
 let $startBtn = document.querySelector('.btn-start');
-
-console.log($startBtn);
+let $quizQus = document.querySelector('.question');
+let $quizAnsA = document.querySelector('.answer-option-a');
+let $quizAnsB = document.querySelector('.answer-option-b');
+let $quizAnsC = document.querySelector('.answer-option-c');
+let $nexBtn = document.querySelector('.btn-next-answer');
+let $backBtn = document.querySelector('.btn-back-answer');
 
 let totalQuiz = quizAnswers.length;
 
-quizAnswers.forEach((question, index)=>{
-    console.log(question, index);
-});
+function loadQuiz(){
+    let index = localStorage.getItem('quizNum');
+    
+    $quizQus.innerHTML=quizAnsOptions[index].question;
+    $quizAnsA.innerText =quizAnsOptions[index].answerOptionA;
+    $quizAnsB.innerText =quizAnsOptions[index].answerOptionB;
+    $quizAnsC.innerText =quizAnsOptions[index].answerOptionC;
+    
+}
 
-let index = 0;
-
+//locad quiz data if local storage have quiz data
 if(localStorage.getItem('quizData')){
     $welcomeScreen.classList.add('hidden');
     $quizSection.classList.remove('hidden');
+    loadQuiz();
 }
 
 $startBtn.addEventListener('click',(e)=>{
-    console.log('clicked');
     localStorage.setItem('quizData', JSON.stringify(quizAnsOptions));
     $welcomeScreen.classList.add('hidden');
     $quizSection.classList.remove('hidden');
     localStorage.setItem('quizNum','0');
+    loadQuiz();
+
 })
 
+$nexBtn .addEventListener('click',()=>{
+    let index = localStorage.getItem('quizNum');
+
+    if(totalQuiz>Number(localStorage.getItem('quizNum'))+1){
+        index = Number(localStorage.getItem('quizNum'))+1;
+    }
+    localStorage.setItem('quizNum', index);
+    console.log(index, localStorage.getItem('quizNum'));
+    loadQuiz();
+});
+
+$backBtn .addEventListener('click',()=>{
+    let index = localStorage.getItem('quizNum');
+    if(Number(localStorage.getItem('quizNum'))-1>=0){
+        index = Number(localStorage.getItem('quizNum'))-1;
+    }
+    localStorage.setItem('quizNum', index);
+    console.log(index, localStorage.getItem('quizNum'));
+    loadQuiz();
+});
