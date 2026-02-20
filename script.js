@@ -105,7 +105,8 @@ let $quizAnsB = document.querySelector('.answer-option-b');
 let $quizAnsC = document.querySelector('.answer-option-c');
 let $nexBtn = document.querySelector('.btn-next-answer');
 let $backBtn = document.querySelector('.btn-back-answer');
-let $startAgainBtn = document.querySelector('.btn-start-again')
+let $startAgainBtn = document.querySelector('.btn-start-again');
+let $answerOptions = document.querySelectorAll('.answer');
 
 let totalQuiz = quizAnswers.length;
 
@@ -124,7 +125,37 @@ function loadQuiz(){
     }else{
         $nexBtn.innerText = "Next >";
     }
+
+    let userOption = JSON.parse(localStorage.getItem('userAnswer'))[index];
+    if(userOption){
+        let checkRadio = document.getElementById(userOption);
+        checkRadio.checked = true;
+    }
 }
+
+function checkQuizFinish(){
+    let userAnswer = JSON.parse(localStorage.getItem('userAnswer'));
+    let numUserAnsCount = userAnswer.filter(item => item !== null).length;
+
+    if(totalQuiz === numUserAnsCount){
+        return true;
+    }else{
+        return false;
+    }
+
+}
+
+function saveUserOption(){
+    $answerOptions.forEach((option)=>{
+        if(option.checked){
+            let userAnswer = JSON.parse(localStorage.getItem('userAnswer'));
+            userAnswer[Number(localStorage.getItem('quizNum'))] = option.id;
+            localStorage.setItem("userAnswer",JSON.stringify(userAnswer));
+        }
+    });
+}
+
+
 
 function showStartWindow(){
     $welcomeScreen.classList.remove('hidden');
@@ -148,9 +179,10 @@ function startQuiz(){
     showQuizWindow();
     localStorage.setItem('quizNum','0');
     localStorage.setItem('quizStatus','start');
+    let userAnswer = [];
+    localStorage.setItem('userAnswer',JSON.stringify(userAnswer));
     loadQuiz();
 }
-
 
 //locad quiz data if local storage have quiz data
 if(localStorage.getItem('quizStatus') === 'start'){
@@ -169,19 +201,26 @@ $startAgainBtn.addEventListener('click',(e)=>{
 });
 
 $nexBtn.addEventListener('click',()=>{
+
+    saveUserOption();
+
     if($nexBtn.innerText == "Next >"){
-        let index = localStorage.getItem('quizNum');
+        let index = Number(localStorage.getItem('quizNum'));
     
-        if(totalQuiz>Number(localStorage.getItem('quizNum'))+1){
-            index = Number(localStorage.getItem('quizNum'))+1;
+        if(totalQuiz>index+1){
+            index = index+1;
+            localStorage.setItem('quizNum', index);
+            loadQuiz();
         }
-        localStorage.setItem('quizNum', index);
-        loadQuiz();
     }else if($nexBtn.innerText == "Finish"){
-        if(confirm("Are you sure?")){
-            showFinishWindow();
-            localStorage.clear('quizData');
-            localStorage.setItem("quizStatus","finish");
+        if(checkQuizFinish()){
+            if(confirm("Are you sure?")){
+                showFinishWindow();
+                localStorage.clear('quizData');
+                localStorage.setItem("quizStatus","finish");
+            }
+        }else{
+            alert("please finish all questions");
         }
     }
 });
